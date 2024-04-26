@@ -1,0 +1,41 @@
+{
+        "title": [
+                "Lekker, unik og moderne toppleilighet med balkong!",
+                "Høy standard, 3-soverom, 2-bad."
+        ],
+        "details": [
+                {
+                        "name": "fellesgjeld",
+                        "value": 300500
+                },
+                {
+                        "name": "omkostninger",
+                        "value": 15000
+                },
+                {
+                        "name": "totalpris",
+                        "value": 16300500
+                },
+                {
+                        "name": "boligtype",
+                        "value": "aksjeleilighel"
+                },
+                {
+                        "name": "fellesgjeld",
+                        "value": 3050
+                },
+                {
+                        "name": "energimerking",
+                        "value": "l-røde"
+                }
+        ],
+        "contact": {
+                "name": "Jan-Petter Grønborg",
+                "phone": "92992929"
+        },
+        "address": {
+                "street": "Ivan Bjørndalsgate 34",
+                "city": "Oslo",
+                "zipCode": "0258"
+        }
+}

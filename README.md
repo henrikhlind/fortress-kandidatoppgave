@@ -1,3 +1,3 @@
 # fortress-kandidatoppgave
 
-Bruker en CORS proxy da forespørslene mine fra localhost ble blokkert. I praksis vil dette være annerledes dersom nettsiden var i produksjon.
+Fikke ikke hentet data fra URL på localhost da den ble blokkert av CORS-policy, lastet derfor ned filene. I produksjon ville dette var annerledes, da det kun var maskinen min som ble blokkert.

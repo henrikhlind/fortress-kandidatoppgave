@@ -1,8 +1,18 @@
+// Oppgave 1
+function formatPhoneNumber(phoneNumber: string): string {
+  return phoneNumber.replace(/(0047|\+47|47)?(\d{3})(\d{2})(\d{3})/, '+47 $2 $3 $4');
+}
+
+function formatPrice(price: number): string {
+  return new Intl.NumberFormat('nb-NO').format(price).replace(/\s/g, '.') + ',-';
+}
+
 async function renderData(): Promise<void> {
-  const target = 'https://fortress.no/data/data-2020-interview.json';
-  const response = await fetch('https://cors-anywhere.herokuapp.com/' + target, {
+  // Hadde problemer med å hente data fra serveren pga. CORS-policy, skrev mer om dette på readme :) Hadde brukt target variablen under dersom nettsiden var i produksjon
+  // const target = 'https://fortress.no/data/data-2020-interview.json';
+  const response = await fetch('/data/data-2020-interview.json', {
     method: 'GET',
-  }); // CORS-proxy aktiveres på https://cors-anywhere.herokuapp.com/corsdemo
+  });
 
   if (!response.ok) {
     document.getElementById('title')!.innerHTML += `<h1>Kunne ikke hente data</h1>`; // Oppdaterer tittel ved feil
@@ -30,7 +40,7 @@ async function renderData(): Promise<void> {
       <p>${Element.name.charAt(0).toUpperCase() + Element.name.slice(1)}</p> 
       <p class="data-value">${
         typeof Element.value === 'number'
-          ? new Intl.NumberFormat('nb-NO').format(Element.value).replace(/\s/g, '.') + ',-' // Formater tall med punktumskille og null øre (antar at tall er hele, uten øre)
+          ? formatPrice(Element.value) // Formater tall med punktumskille og null øre (antar at tall er hele, uten øre)
           : Element.value.charAt(0).toUpperCase() + Element.value.slice(1) // Stor forborkstav
       }</p>
       </div>
@@ -59,7 +69,7 @@ async function renderData(): Promise<void> {
   if (data.contact.name && data.contact.phone) {
     document.getElementById('contact')!.innerHTML += `
       <p>Kontakt<p>
-      <p class="data-value">${data.contact.name}<br>${data.contact.phone.replace(/(0047|\+47|47)?(\d{3})(\d{2})(\d{3})/, '+47 $2 $3 $4')}</p>
+      <p class="data-value">${data.contact.name}<br>${formatPhoneNumber(data.contact.phone)}</p>
     `;
   } else {
     document.getElementById('contact')!.innerHTML += `
@@ -73,15 +83,12 @@ renderData();
 
 // Oppgave 2
 function sortData(data: { name: string; value: string; description: string }[]): { name: string; value: string; description: string }[] {
-  const sortedData: { name: string; value: string; description: string }[] = [];
+  const validData = data.filter((element) => element.description.toLowerCase() === 'valid' || element.description.toLowerCase() === 'true');
 
-  data.forEach((element) => {
-    if (element.description.toLowerCase() === 'valid' || element.description.toLowerCase() === 'true') sortedData.push(element);
-  });
-
-  sortedData.sort((a: { value: string }, b: { value: string }): number => {
+  validData.sort((a, b) => {
     const valueA = Number(a.value);
     const valueB = Number(b.value);
+
     if (valueA < valueB) {
       return -1;
     }
@@ -91,10 +98,10 @@ function sortData(data: { name: string; value: string; description: string }[]):
     return 0;
   });
 
-  return sortedData;
+  return validData;
 }
 
-fetch('https://cors-anywhere.herokuapp.com/' + 'https://fortress.no/data/oppgave-2-2020.json')
+fetch('/data/oppgave-2-2020.json')
   .then((response) => response.json())
   .then((data) => {
     console.log(sortData(data));
